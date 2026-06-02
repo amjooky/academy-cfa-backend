@@ -6,3 +6,6 @@ build/
 .DS_Store
 scratch/
 *.log
+
+# Include compiled service outputs in deploy uploads (Render respects gitignore)
+!services/**/dist/
