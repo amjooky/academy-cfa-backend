@@ -5,9 +5,9 @@ services:
     region: frankfurt
     plan: free
     # Install dependencies across all workspaces, then build the typescript files
-    buildCommand: "npm install --include=dev && npm run build --workspaces"
-    # Start the compiled javascript from the gateway service
-    startCommand: "cd services/gateway && npm start"
+    buildCommand: "npm ci --include=dev && npm run build --workspaces"
+    # Start the compiled javascript from the gateway service (use npm workspaces)
+    startCommand: "npm --workspace=@academy-saas/gateway run start"
     envVars:
       - key: NODE_ENV
         value: production
