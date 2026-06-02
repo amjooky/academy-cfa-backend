@@ -83,6 +83,13 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
+    if (user.kyc_status === 'pending') {
+      return res.status(403).json({
+        error: 'Account pending approval',
+        message: 'Your account is pending approval and cannot login until it is activated.',
+      });
+    }
+
     if (!allowedRoles.includes(user.role)) {
       return res.status(403).json({
         error: 'Account type does not match this user.',
