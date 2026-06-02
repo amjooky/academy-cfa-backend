@@ -15,6 +15,7 @@
     "db:check": "powershell -ExecutionPolicy Bypass -File scripts/check-xampp-db.ps1",
     "seed": "node scratch/seed-data.js",
     "build": "npm run build --workspaces",
+    "mongo:init": "node scripts/init-mongo.js",
     "test": "npm run test --workspaces"
   },
   "dependencies": {

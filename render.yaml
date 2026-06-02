@@ -23,3 +23,11 @@ services:
         value: "x-tenant-id"
       - key: DEFAULT_TENANT
         value: "demo"
+      # NOTE: Replace the placeholder values below with real connection strings
+      - key: MONGO_URL
+        value: "mongodb+srv://chermitisami69_db_user:UrNEBFqUGgxb0dv8@cfa.vfjmoa4.mongodb.net/?appName=CFA"
+      - key: REDIS_URL
+        value: "REPLACE_WITH_YOUR_REDIS_URL"
+      # Keep MONOLITH=true to run all services inside the unified gateway; set to 'false' to enable proxy mode
+      - key: MONOLITH
+        value: "true"
