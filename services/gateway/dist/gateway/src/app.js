@@ -34,6 +34,22 @@ const mongo_1 = require("../../pedagogy/src/config/mongo");
 // Load environment from monorepo root (works for dev and compiled dist/)
 dotenv_1.default.config({ path: path_1.default.resolve(__dirname, '../../../.env') });
 const app = (0, express_1.default)();
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+    ? process.env.ALLOWED_ORIGINS.split(',').map((origin) => origin.trim()).filter(Boolean)
+    : [];
+const corsOptions = allowedOrigins.length
+    ? {
+        origin: (origin, callback) => {
+            if (!origin || allowedOrigins.includes(origin)) {
+                callback(null, true);
+            }
+            else {
+                callback(new Error(`CORS policy does not allow access from origin ${origin}`));
+            }
+        },
+        credentials: true,
+    }
+    : {};
 // Determine execution mode (default to monolith mode)
 const IS_MONOLITH = process.env.MONOLITH !== 'false';
 const PORT = process.env.PORT || 3000;
@@ -43,7 +59,7 @@ if (IS_MONOLITH) {
     console.log(`  Running all 10 services natively on unified Port: ${PORT}`);
     console.log(`======================================================\n`);
     // Configure Global Middlewares
-    app.use((0, cors_1.default)());
+    app.use((0, cors_1.default)(corsOptions));
     app.use(express_1.default.json());
     // Graceful Pedagogy MongoDB connection setup
     (0, mongo_1.connectMongo)()

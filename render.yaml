@@ -28,6 +28,8 @@ services:
         value: "mongodb+srv://chermitisami69_db_user:UrNEBFqUGgxb0dv8@cfa.vfjmoa4.mongodb.net/?appName=CFA"
       - key: REDIS_URL
         value: "REPLACE_WITH_YOUR_REDIS_URL"
+      - key: ALLOWED_ORIGINS
+        value: "https://academy-cfa-frontend.vercel.app"
       # Keep MONOLITH=true to run all services inside the unified gateway; set to 'false' to enable proxy mode
       - key: MONOLITH
         value: "true"

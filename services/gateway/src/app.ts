@@ -35,6 +35,23 @@ dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
 
 const app = express();
 
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',').map((origin) => origin.trim()).filter(Boolean)
+  : [];
+
+const corsOptions = allowedOrigins.length
+  ? {
+      origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true);
+        } else {
+          callback(new Error(`CORS policy does not allow access from origin ${origin}`));
+        }
+      },
+      credentials: true,
+    }
+  : {};
+
 // Determine execution mode (default to monolith mode)
 const IS_MONOLITH = process.env.MONOLITH !== 'false';
 const PORT = process.env.PORT || 3000;
@@ -46,7 +63,7 @@ if (IS_MONOLITH) {
   console.log(`======================================================\n`);
 
   // Configure Global Middlewares
-  app.use(cors());
+  app.use(cors(corsOptions));
   app.use(express.json());
 
   // Graceful Pedagogy MongoDB connection setup
