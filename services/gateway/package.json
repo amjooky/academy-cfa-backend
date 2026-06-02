@@ -1,9 +1,9 @@
 {
   "name": "@academy-saas/gateway",
   "version": "1.0.0",
-  "main": "dist/app.js",
+  "main": "dist/gateway/src/app.js",
   "scripts": {
-    "start": "node dist/app.js",
+    "start": "node dist/gateway/src/app.js",
     "dev": "ts-node-dev --transpile-only --respawn src/app.ts",
     "build": "tsc"
   },
