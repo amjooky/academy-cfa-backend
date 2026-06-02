@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS",
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "src/**/*",
+    "../auth/src/**/*",
+    "../academy/src/**/*",
+    "../planning/src/**/*",
+    "../pedagogy/src/**/*",
+    "../payment/src/**/*",
+    "../notification/src/**/*",
+    "../gamification/src/**/*",
+    "../ai/src/**/*",
+    "../analytics/src/**/*"
+  ],
+  "exclude": ["node_modules", "**/*.test.ts"]
+}

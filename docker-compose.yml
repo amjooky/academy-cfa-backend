@@ -1,0 +1,141 @@
+# Local development uses XAMPP MySQL + phpMyAdmin (see schema.sql, npm run db:setup).
+# Docker stack below is for optional microservices / Postgres deployment — not required for dev.
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: academy
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./infra/docker/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+
+  mongo:
+    image: mongo:6
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+
+  gateway:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./services/gateway/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - auth-service
+      - academy-service
+      - planning-service
+      - pedagogy-service
+      - payment-service
+      - notification-service
+      - gamification-service
+      - ai-service
+      - analytics-service
+
+  auth-service:
+    build:
+      context: ./services/auth
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - DB_URL=postgresql://admin:password@postgres:5432/academy
+      - REDIS_URL=redis://redis:6379
+
+  academy-service:
+    build:
+      context: ./services/academy
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+      - DB_URL=postgresql://admin:password@postgres:5432/academy
+      - REDIS_URL=redis://redis:6379
+
+  planning-service:
+    build:
+      context: ./services/planning
+    ports:
+      - "3003:3003"
+    environment:
+      - PORT=3003
+      - DB_URL=postgresql://admin:password@postgres:5432/academy
+      - REDIS_URL=redis://redis:6379
+
+  pedagogy-service:
+    build:
+      context: ./services/pedagogy
+    ports:
+      - "3004:3004"
+    environment:
+      - PORT=3004
+      - DB_URL=postgresql://admin:password@postgres:5432/academy
+      - MONGO_URL=mongodb://mongo:27017
+      - REDIS_URL=redis://redis:6379
+
+  payment-service:
+    build:
+      context: ./services/payment
+    ports:
+      - "3005:3005"
+    environment:
+      - PORT=3005
+      - DB_URL=postgresql://admin:password@postgres:5432/academy
+      - REDIS_URL=redis://redis:6379
+
+  notification-service:
+    build:
+      context: ./services/notification
+    ports:
+      - "3006:3006"
+    environment:
+      - PORT=3006
+      - REDIS_URL=redis://redis:6379
+
+  gamification-service:
+    build:
+      context: ./services/gamification
+    ports:
+      - "3007:3007"
+    environment:
+      - PORT=3007
+      - DB_URL=postgresql://admin:password@postgres:5432/academy
+      - REDIS_URL=redis://redis:6379
+
+  ai-service:
+    build:
+      context: ./services/ai
+    ports:
+      - "3008:3008"
+    environment:
+      - PORT=3008
+      - DB_URL=postgresql://admin:password@postgres:5432/academy
+      - REDIS_URL=redis://redis:6379
+
+  analytics-service:
+    build:
+      context: ./services/analytics
+    ports:
+      - "3009:3009"
+    environment:
+      - PORT=3009
+      - DB_URL=postgresql://admin:password@postgres:5432/academy
+      - REDIS_URL=redis://redis:6379
+
+volumes:
+  pgdata:
+  redisdata:
+  mongodata:

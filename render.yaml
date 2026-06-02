@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: academy-saas-backend
+    env: node
+    region: frankfurt
+    plan: free
+    # Install dependencies across all workspaces, then build the typescript files
+    buildCommand: "npm install && npm run build --workspaces"
+    # Start the compiled javascript from the gateway service
+    startCommand: "cd services/gateway && npm start"
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DB_URL
+        value: "mysql://3aYLhuZRvvXoV7h.root:SgZMrxQnjQM7LOT4@gateway01.eu-central-1.prod.aws.tidbcloud.com:4000/?ssl={\"rejectUnauthorized\":true}"
+      - key: JWT_SECRET
+        value: "production-jwt-secret-replace-me"
+      - key: JWT_REFRESH_SECRET
+        value: "production-refresh-secret-replace-me"
+      - key: TENANT_HEADER
+        value: "x-tenant-id"
+      - key: DEFAULT_TENANT
+        value: "demo"

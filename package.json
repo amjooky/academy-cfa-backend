@@ -1,0 +1,24 @@
+{
+  "name": "academy-saas",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "services/*",
+    "shared/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspaces",
+    "dev:backend": "npm run dev --workspace=@academy-saas/gateway",
+    "dev:frontend": "npm run dev --workspace=@academy-saas/admin",
+    "db:setup": "powershell -ExecutionPolicy Bypass -File scripts/setup-xampp-db.ps1",
+    "db:reset": "powershell -ExecutionPolicy Bypass -File scripts/db-reset.ps1",
+    "db:check": "powershell -ExecutionPolicy Bypass -File scripts/check-xampp-db.ps1",
+    "seed": "node scratch/seed-data.js",
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces"
+  },
+  "dependencies": {
+    "mysql2": "^3.22.3",
+    "uuid": "^14.0.0"
+  }
+}
