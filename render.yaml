@@ -4,8 +4,8 @@ services:
     env: node
     region: frankfurt
     plan: free
-    # Install dependencies across all workspaces, build the typescript files, and initialize MongoDB
-    buildCommand: "npm ci --include=dev && npm run build --workspaces && npm run mongo:init"
+    # Install dependencies across all workspaces and build the typescript files
+    buildCommand: "npm ci --include=dev && npm run build --workspaces"
     # Start the compiled javascript from the gateway service (use npm workspaces)
     startCommand: "npm --workspace=@academy-saas/gateway run start"
     envVars:
