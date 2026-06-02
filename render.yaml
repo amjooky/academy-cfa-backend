@@ -5,7 +5,7 @@ services:
     region: frankfurt
     plan: free
     # Install dependencies across all workspaces, then build the typescript files
-    buildCommand: "npm install && npm run build --workspaces"
+    buildCommand: "npm install --include=dev && npm run build --workspaces"
     # Start the compiled javascript from the gateway service
     startCommand: "cd services/gateway && npm start"
     envVars:
